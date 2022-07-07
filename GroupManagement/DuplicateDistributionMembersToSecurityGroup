@@ -1,4 +1,5 @@
 #duplicates distribution group members to a defined security group.
+#requires an application to be registered with the following permissions: User.ReadWrite.All, GroupMember.ReadWrite.All
 $TenantID = Get-AutomationVariable -Name 'TenantID'
 $SourceGroupID = Get-AutomationVariable -Name 'SourceGroup'
 $DestinationGroupID = Get-AutomationVariable -Name 'DestinationGroup'
@@ -9,7 +10,6 @@ $connection = Connect-MgGraph -ClientID $AppID -TenantId $TenantID -CertificateT
 
 if ($connection)
 {
-	Import-Module Microsoft.Graph.Groups, Microsoft.Graph.Identity.DirectoryManagement
 	$groupmembers = (Get-MgGroupMember -GroupId $SourceGroupID).id
 
 	$membersOData = @()
