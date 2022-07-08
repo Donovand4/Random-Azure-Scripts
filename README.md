@@ -1,6 +1,6 @@
 Collection of runbook scripts
 
-Requirements:
+Required Setup for App-Only Authentication:
 
 1. Build PowerShell scripts with Microsoft Graph
   https://docs.microsoft.com/en-gb/graph/tutorials/powershell?tabs=aad%2Cwindows&tutorial-step=1
