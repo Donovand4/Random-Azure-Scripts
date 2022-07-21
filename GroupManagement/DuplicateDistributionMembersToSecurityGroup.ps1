@@ -11,18 +11,11 @@ $connection = Connect-MgGraph -ClientID $AppID -TenantId $TenantID -CertificateT
 if ($connection)
 {
 	$groupmembers = (Get-MgGroupMember -GroupId $SourceGroupID).id
-
-	$membersOData = @()
-	foreach ($groupmember in $groupmembers) {
-		$membersOData += "https://graph.microsoft.com/v1.0/directoryObjects/$($groupmember)"
+	
+	foreach ($groupmember in $groupmembers) 
+	{
+		New-MgGroupMember -GroupId $DestinationGroupID -DirectoryObjectId $groupmember
 	}
 
-	$params = @{
-		"Members@odata.bind" = @(
-			$membersOData
-		)
-	}
-
-	Update-MgGroup -GroupId $DestinationGroupID -BodyParameter $params
 	write-output "Group Updated"
 }
