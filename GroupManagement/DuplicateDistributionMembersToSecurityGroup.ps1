@@ -10,12 +10,26 @@ $connection = Connect-MgGraph -ClientID $AppID -TenantId $TenantID -CertificateT
 
 if ($connection)
 {
-	$groupmembers = (Get-MgGroupMember -GroupId $SourceGroupID).id
-	
-	foreach ($groupmember in $groupmembers) 
+	$Srcgroupmembers = (Get-MgGroupMember -GroupId $SourceGroupID).id
+	$DstgroupMembers = (Get-MgGroupMember -GroupId $DestinationGroupID).id
+
+foreach ($Srcgroupmember in $Srcgroupmembers)
+{
+	if ($DstgroupMembers -notcontains $Srcgroupmember)
 	{
-		New-MgGroupMember -GroupId $DestinationGroupID -DirectoryObjectId $groupmember
+		New-MgGroupMember -GroupId $DestinationGroupID -DirectoryObjectId $Srcgroupmember
+		write-output "Dest group missing source group user $($Srcgroupmember)"
 	}
+}
+
+foreach ($DstgroupMember in $DstgroupMembers)
+{
+	if ($Srcgroupmembers -notcontains $DstgroupMember)
+	{
+		New-MgGroupMember -GroupId $SourceGroupID -DirectoryObjectId $DstgroupMember
+		write-output "source group missing destination group user $($DstgroupMember)"
+	}
+}
 
 	write-output "Group Updated"
 }
