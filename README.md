@@ -1,4 +1,7 @@
-Collection of runbook scripts
+Collection of random scripts for Azure enviroments.
+
+
+For the runbook scripts, please follow the below tutorials to deploy the prerequisites.
 
 Required Setup for App-Only Authentication:
 
