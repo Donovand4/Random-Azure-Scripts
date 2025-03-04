@@ -27,7 +27,7 @@ foreach ($Rule in $RuleID){
         isDefaultRecipientsEnabled = $true
         notificationRecipients     = @(
             "alias@domain.com"
-        )
+        ) #to clear the mail addresses, remove all alias but keep the @()
         level                      = $level
         inheritableSettings        = @(
         )
