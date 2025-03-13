@@ -5,7 +5,7 @@ $AppID = Get-AutomationVariable -Name 'ServicePrincipalAppID' #app id from app r
 $AuthCert = Get-AutomationCertificate -Name 'cert'
 $connection = Connect-MgGraph -ClientID $AppID -TenantId $TenantID -CertificateThumbprint $AuthCert.Thumbprint
 
-$GuestUsers = Get-MgBetaUser -Filter "userType eq 'Guest'" -All -Property DisplayName, UserPrincipalName, AccountEnabled, mail, CreationType, UserType, ExternalUserState, signInActivity `
+$GuestUsers = Get-MgUser -Filter "userType eq 'Guest'" -All -Property DisplayName, UserPrincipalName, AccountEnabled, mail, CreationType, UserType, ExternalUserState, signInActivity `
  | Select-Object DisplayName, UserPrincipalName, AccountEnabled, mail, CreationType, UserType, ExternalUserState, `
  @{N='LastSignInDateTime';E={$_.signInActivity.LastSignInDateTime.DateTime}}, @{N='LastNonInteractiveSignInDateTime';E={$_.signInActivity.LastNonInteractiveSignInDateTime.DateTime}}
 
