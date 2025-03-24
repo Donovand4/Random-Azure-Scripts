@@ -115,5 +115,19 @@ $DNSZones = @(
 
 # Loop through each DNS zone and create a conditional forwarder
 foreach ($zone in $DNSZones) {
-    Add-DnsServerConditionalForwarderZone -Name $zone -ReplicationScope $ReplicationScope -MasterServers $ForwarderIP
+    # Check if the conditional forwarder already exists
+    $existingForwarder = Get-DnsServerZone -Name $zone -ErrorAction SilentlyContinue
+    if ($existingForwarder) {
+        Write-Host "Conditional forwarder for $zone already exists. Skipping..."
+        continue
+    }
+    # Create the conditional forwarder
+    Write-Host "Creating conditional forwarder for $zone with IP $ForwarderIP and replication scope $ReplicationScope..." -ForegroundColor Green
+    try {
+        # Add the conditional forwarder
+        Add-DnsServerConditionalForwarderZone -Name $zone -ReplicationScope $ReplicationScope -MasterServers $ForwarderIP
+        Write-Host "Successfully created conditional forwarder for $zone." -ForegroundColor Green
+    } catch {
+        Write-Host "Failed to create conditional forwarder for $zone. Error: $_" -ForegroundColor Red
+    }
 }
